@@ -20,6 +20,8 @@ export class UserService {
         rpcUrl: true,
         wssRpcUrl: true,
         devWallet: true,
+        apiKey: true,
+        transactionFee: true,
         isConfirmed: true,
         isSettingConfirmed: true,
         createdAt: true,
@@ -36,7 +38,7 @@ export class UserService {
 
   async updateUser(
     id: number,
-    dto: UpdateUserDto,
+    dto,
   ): Promise<UserResponseDto> {
     if (!id) {
       throw new Error('User ID is required');

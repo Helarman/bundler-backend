@@ -15,6 +15,8 @@ model User {
   rpcUrl       String?
   wssRpcUrl    String?
   devWallet    String?
+  apiKey       String?  
+  transactionFee Float?  @default(0.0)
   isConfirmed  Boolean   @default(false)
   isSettingConfirmed  Boolean   @default(false)
   createdAt    DateTime  @default(now())

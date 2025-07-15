@@ -29,7 +29,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   async updateCurrentUser(
     @CurrentUser('id') userId: number,
-    @Body() dto: UpdateUserDto,
+    @Body() dto,
   ): Promise<UserResponseDto> {
     return this.userService.updateUser(userId, dto);
   }
