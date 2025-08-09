@@ -38,7 +38,7 @@ export class AuthService {
     return this.signTokens(user.id, user.email);
   }
 
-  async logout(userId: number): Promise<boolean> {
+  async logout(userId: string): Promise<boolean> {
     await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -75,7 +75,7 @@ export class AuthService {
   }
 
   private async signTokens(
-    userId: number,
+    userId: string,
     email: string,
   ): Promise<TokensResponseDto> {
     const [accessToken, refreshToken] = await Promise.all([

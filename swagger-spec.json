@@ -1,0 +1,2057 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/app": {
+      "get": {
+        "operationId": "AppController_getConfig",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "App config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get app config",
+        "tags": [
+          "app"
+        ]
+      },
+      "patch": {
+        "operationId": "AppController_updateConfig",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAppDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "App config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update app config",
+        "tags": [
+          "app"
+        ]
+      }
+    },
+    "/accounts/sync": {
+      "post": {
+        "description": "This method synchronize accounts with blockchain by getting accounts balance from RPC",
+        "operationId": "AccountsController_sync",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Synchronize accounts with blockchain",
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/sync/all": {
+      "post": {
+        "description": "This method synchronize all accounts with blockchain by getting accounts balance from RPC",
+        "operationId": "AccountsController_syncAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Synchronize all accounts with blockchain",
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts": {
+      "get": {
+        "operationId": "AccountsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Array of accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountEntity"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all accounts",
+        "tags": [
+          "accounts"
+        ]
+      },
+      "post": {
+        "operationId": "AccountsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create new account",
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/import": {
+      "put": {
+        "description": "WE CAN'T GUARANTEE THAT THE ACCOUNT WILL NOT LOST SINCE IT IS IMPORTED",
+        "operationId": "AccountsController_import",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Import account",
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/{id}": {
+      "get": {
+        "operationId": "AccountsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "404": {
+            "description": "Account not found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get account by it's id",
+        "tags": [
+          "accounts"
+        ]
+      },
+      "patch": {
+        "operationId": "AccountsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update account",
+        "tags": [
+          "accounts"
+        ]
+      },
+      "delete": {
+        "operationId": "AccountsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Account removed"
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Remove account",
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/{id}/export": {
+      "post": {
+        "description": "AFTER EXPORTING THE SECRET KEY WE CAN'T GUARANTEE THAT THE ACCOUNT WILL NOT LOST",
+        "operationId": "AccountsController_getSecretKey",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExportAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Secret key of the solana account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "403": {
+            "description": "Invalid password"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Export secret key of the account",
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/{id}/sol-transfer": {
+      "put": {
+        "description": "This method transfer SOL to account. EVERYONE WILL BE KNOW WHO IS THE RECIPIENT",
+        "operationId": "AccountsController_transferSol",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferSolDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaTransactionEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Transfer SOL to account",
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/{accountId}/spl/buy": {
+      "post": {
+        "description": "Buy token for some amount of SOL",
+        "operationId": "AccountsSolanaController_buyToken",
+        "parameters": [
+          {
+            "name": "accountId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaTransactionEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Buy SPL tokens",
+        "tags": [
+          "spl-token"
+        ]
+      }
+    },
+    "/accounts/{accountId}/spl/sell": {
+      "delete": {
+        "description": "Sell token for some amount of SOL",
+        "operationId": "AccountsSolanaController_sellToken",
+        "parameters": [
+          {
+            "name": "accountId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SellTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaTransactionEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Sell SPL tokens",
+        "tags": [
+          "spl-token"
+        ]
+      }
+    },
+    "/accounts/{accountId}/spl/transfer": {
+      "put": {
+        "description": "Transfer SPL tokens to defined address",
+        "operationId": "AccountsSolanaController_transferToken",
+        "parameters": [
+          {
+            "name": "accountId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferSplTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SPL tokens transfer started!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaTransactionEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Transfer SPL tokens",
+        "tags": [
+          "spl-token"
+        ]
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "operationId": "AuthController_signup",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "operationId": "AuthController_signin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refreshTokens",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/user/me": {
+      "get": {
+        "operationId": "UserController_getCurrentUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/update": {
+      "put": {
+        "operationId": "UserController_updateCurrentUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/spl": {
+      "get": {
+        "description": "This method returns token data",
+        "operationId": "SolanaTokenController_getData",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Token data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaTokenDataEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get token data",
+        "tags": [
+          "spl-token"
+        ]
+      },
+      "post": {
+        "description": "Creates PumpFun token",
+        "operationId": "SolanaTokenController_createToken",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePumpFunTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hash",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponseEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create SPL token",
+        "tags": [
+          "spl-token"
+        ]
+      }
+    },
+    "/spl/buy-all": {
+      "post": {
+        "description": "This method buys SPL tokens from all accounts, based on provided data",
+        "operationId": "SolanaTokenController_buyAll",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyAllSPLDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SPL tokens buy started!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponseEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Buy SPL tokens",
+        "tags": [
+          "spl-token"
+        ]
+      }
+    },
+    "/spl/transfer-all": {
+      "put": {
+        "description": "This method transfers all SPL tokens to defined address. EVERYONE WILL BE KNOW WHO IS THE RECIPIENT AND WHAT HAPPENED",
+        "operationId": "SolanaTokenController_transferAll",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferAllDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SPL tokens transfer started!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponseEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Transfer all SPL tokens to defined address",
+        "tags": [
+          "spl-token"
+        ]
+      }
+    },
+    "/spl/sell-all": {
+      "delete": {
+        "description": "This method sells all SPL tokens, based on provided data",
+        "operationId": "SolanaTokenController_sellAll",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SellAllSPLDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SPL tokens sell started!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsResponseEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Sell all SPL tokens",
+        "tags": [
+          "spl-token"
+        ]
+      }
+    },
+    "/solana-dca/accounts": {
+      "get": {
+        "description": "This method returns all solana DCA accounts than created and assigned to the accounts. You can explitly edit some of them",
+        "operationId": "SolanaDcaController_getAccounts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Array of solana DCA accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DcaAccountEntity"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all solana DCA accounts",
+        "tags": [
+          "solana-dca"
+        ]
+      }
+    },
+    "/solana-dca/accounts/all": {
+      "patch": {
+        "description": "Updates all existing solana DCA accounts with provided data",
+        "operationId": "SolanaDcaController_updateAllAccounts",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDcaAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated solana DCA accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DcaAccountEntity"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update all solana DCA accounts",
+        "tags": [
+          "solana-dca"
+        ]
+      }
+    },
+    "/solana-dca/accounts/{id}": {
+      "patch": {
+        "description": "This method updates solana DCA account",
+        "operationId": "SolanaDcaController_updateAccount",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDcaAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated solana DCA account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DcaAccountEntity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update solana DCA account",
+        "tags": [
+          "solana-dca"
+        ]
+      }
+    },
+    "/solana-dca/on": {
+      "post": {
+        "description": "This method activates all solana DCA accounts",
+        "operationId": "SolanaDcaController_turnOnAllAccounts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Activated solana DCA accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DcaAccountEntity"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Activate all solana DCA accounts",
+        "tags": [
+          "solana-dca"
+        ]
+      }
+    },
+    "/solana-dca/off": {
+      "delete": {
+        "description": "This method deactivates all solana DCA accounts",
+        "operationId": "SolanaDcaController_turnOffAllAccounts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Deactivated solana DCA accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DcaAccountEntity"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Deactivate all solana DCA accounts",
+        "tags": [
+          "solana-dca"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Bundler API",
+    "description": "",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "AppEntity": {
+        "type": "object",
+        "properties": {
+          "tokenId": {
+            "type": "string",
+            "description": "The public key of the token that we will pump!"
+          },
+          "bondingCurveId": {
+            "type": "string",
+            "description": "The public key of the bonding curve"
+          },
+          "associatedBondingCurveId": {
+            "type": "string",
+            "description": "The public key of the associated bonding curve"
+          },
+          "balanceUsagePercent": {
+            "type": "number",
+            "description": "The balance usage percentage"
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee"
+          },
+          "lastSyncedAt": {
+            "type": "object",
+            "description": "The date when the token was last synced"
+          }
+        },
+        "required": [
+          "tokenId",
+          "bondingCurveId",
+          "associatedBondingCurveId",
+          "balanceUsagePercent",
+          "priorityMicroLamptorsFee"
+        ]
+      },
+      "UpdateAppDto": {
+        "type": "object",
+        "properties": {
+          "tokenId": {
+            "type": "string",
+            "description": "The public key of the token that we will pump!"
+          },
+          "bondingCurveId": {
+            "type": "string",
+            "description": "The public key of the bonding curve"
+          },
+          "associatedBondingCurveId": {
+            "type": "string",
+            "description": "The public key of the associated bonding curve"
+          },
+          "balanceUsagePercent": {
+            "type": "number",
+            "description": "The balance usage percentage"
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee"
+          }
+        }
+      },
+      "AccountEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the account",
+            "example": "c24ef4b2-bd4a-4d5a-ae4c-d1b3ee1e4f4e"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the account",
+            "example": "SOLANA"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The unique identifier of the user that created the account",
+            "example": "c24ef4b2-bd4a-4d5a-ae4c-d1b3ee1e4f4e"
+          },
+          "color": {
+            "type": "string",
+            "description": "The color of the account",
+            "example": "#ff0000"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the account",
+            "example": "JohnDoe"
+          },
+          "publicKey": {
+            "type": "string",
+            "description": "The public key of the solana account",
+            "example": "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf"
+          },
+          "tokenAccountId": {
+            "type": "object",
+            "description": "The public key of the solana token account",
+            "example": "5HpHagT65TZzG1PH3CSu63k8DbpvD8s5ip4nEB3kEsreAnchuDf"
+          },
+          "balance": {
+            "type": "number",
+            "description": "The balance of the account",
+            "example": 5.123456789
+          },
+          "tokenBalance": {
+            "type": "number",
+            "description": "The token balance of the account",
+            "example": 124532
+          },
+          "isBalanceSynced": {
+            "type": "boolean",
+            "description": "Whether the account balance is synced or not"
+          },
+          "isTokenBalanceSynced": {
+            "type": "boolean",
+            "description": "Whether the account token balance is synced or not"
+          },
+          "isTokenAccountInitialized": {
+            "type": "boolean",
+            "description": "Whether the account token account is initialized or not"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether the account is active or not"
+          },
+          "isImported": {
+            "type": "boolean",
+            "description": "Whether the account is imported or not"
+          },
+          "isRemoved": {
+            "type": "boolean",
+            "description": "Whether the account is removed or not"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The date when the account was created"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The date when the account was last updated"
+          },
+          "syncedAt": {
+            "type": "object",
+            "description": "The date when the account was synced"
+          },
+          "syncProblemInspectedAt": {
+            "type": "object",
+            "description": "System timestamp that indicates is there any problem with the account and syncing"
+          },
+          "lastBuyAt": {
+            "type": "object",
+            "description": "The date when the account was last bought"
+          },
+          "lastSellAt": {
+            "type": "object",
+            "description": "The date when the account was last sold"
+          },
+          "removedAt": {
+            "type": "object",
+            "description": "The date when the account was removed"
+          },
+          "exportedAt": {
+            "type": "object",
+            "description": "The date when the account was exported"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "publicKey",
+          "tokenAccountId",
+          "balance",
+          "tokenBalance",
+          "isBalanceSynced",
+          "isTokenBalanceSynced",
+          "isTokenAccountInitialized",
+          "isActive",
+          "isImported",
+          "isRemoved",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "ImportAccountDto": {
+        "type": "object",
+        "properties": {
+          "secretKey": {
+            "type": "object",
+            "description": "The secret key of the account",
+            "example": "string | number[]"
+          }
+        },
+        "required": [
+          "secretKey"
+        ]
+      },
+      "ExportAccountDto": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "Password of the current signed in account"
+          }
+        },
+        "required": [
+          "password"
+        ]
+      },
+      "CreateAccountDto": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "description": "The color of the account",
+            "example": "#ff0000"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the account",
+            "example": "JohnDoe"
+          }
+        }
+      },
+      "TransferSolDto": {
+        "type": "object",
+        "properties": {
+          "percent": {
+            "type": "number",
+            "description": "Percent of current balance to transfer",
+            "example": 100
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount of SOL to transfer",
+            "example": 0.001
+          },
+          "recipient": {
+            "type": "string",
+            "description": "The address to transfer SPL tokens to"
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee",
+            "example": 0
+          },
+          "ignoreRecipientNotFound": {
+            "type": "boolean",
+            "description": "Ignore recipient not found error",
+            "example": false
+          }
+        },
+        "required": [
+          "recipient"
+        ]
+      },
+      "SolanaTransactionEntity": {
+        "type": "object",
+        "properties": {
+          "txHash": {
+            "type": "string",
+            "description": "The transaction hash"
+          }
+        },
+        "required": [
+          "txHash"
+        ]
+      },
+      "UpdateAccountDto": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "description": "The color of the account",
+            "example": "#ff0000"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the account",
+            "example": "JohnDoe"
+          }
+        }
+      },
+      "BuyTokenDto": {
+        "type": "object",
+        "properties": {
+          "solAmount": {
+            "type": "number",
+            "description": "The amount of SOL to spend",
+            "example": 0.001
+          },
+          "slippagePercent": {
+            "type": "number",
+            "description": "The slippage percentage",
+            "example": 1
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee",
+            "example": 0
+          }
+        },
+        "required": [
+          "solAmount"
+        ]
+      },
+      "SellTokenDto": {
+        "type": "object",
+        "properties": {
+          "tokenAmount": {
+            "type": "number",
+            "description": "The amount of token to sell",
+            "example": 10000
+          },
+          "slippagePercent": {
+            "type": "number",
+            "description": "The slippage percentage",
+            "example": 1
+          },
+          "skipLimit": {
+            "type": "boolean",
+            "description": "Skip limit order",
+            "example": false,
+            "default": false
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee",
+            "example": 0
+          }
+        },
+        "required": [
+          "tokenAmount"
+        ]
+      },
+      "TransferSplTokenDto": {
+        "type": "object",
+        "properties": {
+          "percent": {
+            "type": "number",
+            "description": "Percent of current balance to transfer",
+            "example": 100
+          },
+          "recipient": {
+            "type": "string",
+            "description": "The address to transfer SPL tokens to"
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee",
+            "example": 0
+          }
+        },
+        "required": [
+          "recipient"
+        ]
+      },
+      "AuthDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "User email address"
+          },
+          "password": {
+            "type": "string",
+            "example": "strongPassword123",
+            "description": "User password, min length 6"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "SolanaTokenDataEntity": {
+        "type": "object",
+        "properties": {
+          "mint": {
+            "type": "string",
+            "description": "The public key of the token",
+            "example": "So11111111111111111111111111111111111111112"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the token",
+            "example": "Solana"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "The symbol of the token",
+            "example": "SOL"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the token",
+            "example": "Solana is a blockchain that allows you to build and run applications on its network."
+          },
+          "image_uri": {
+            "type": "string",
+            "description": "The image of the token",
+            "example": "https://solana.com/wp-content/uploads/2022/01/solana-logo.png"
+          },
+          "metadata_uri": {
+            "type": "string",
+            "description": "The metadata of the token",
+            "example": "https://solana.com/wp-content/uploads/2022/01/solana-logo.png"
+          },
+          "twitter": {
+            "type": "object",
+            "description": "The Twitter handle of the token",
+            "example": "@solana",
+            "nullable": true
+          },
+          "telegram": {
+            "type": "object",
+            "description": "The Telegram group of the token",
+            "example": "https://t.me/solana",
+            "nullable": true
+          },
+          "bonding_curve": {
+            "type": "string",
+            "description": "The bonding curve address of the token",
+            "example": "6QzTnHVtirQoFESMfruoErj63VdQ1Mwug8ku7cozE7zh"
+          },
+          "associated_bonding_curve": {
+            "type": "string",
+            "description": "The associated bonding curve address of the token",
+            "example": "9W5RLtqDUPUFRHBBqAtULufGLEmjUZeS1wLKUFXhNSfg"
+          },
+          "creator": {
+            "type": "string",
+            "description": "The creator's address",
+            "example": "CJCPJNLB9R3nWcetzZ3XqUNNpgG8FT1ud37zMYNcKZn4"
+          },
+          "created_timestamp": {
+            "type": "number",
+            "description": "The creation timestamp",
+            "example": 1718270774645
+          },
+          "raydium_pool": {
+            "type": "object",
+            "description": "The Raydium pool address",
+            "example": "RaydiumPoolAddress",
+            "nullable": true
+          },
+          "complete": {
+            "type": "boolean",
+            "description": "Indicates if the token data is complete",
+            "example": false
+          },
+          "virtual_sol_reserves": {
+            "type": "number",
+            "description": "The virtual Solana reserves",
+            "example": 30100362525
+          },
+          "virtual_token_reserves": {
+            "type": "number",
+            "description": "The virtual token reserves",
+            "example": 1069422363776860
+          },
+          "total_supply": {
+            "type": "number",
+            "description": "The total supply of the token",
+            "example": 1000000000000000
+          },
+          "website": {
+            "type": "object",
+            "description": "The website of the token",
+            "example": "https://solana.com",
+            "nullable": true
+          },
+          "show_name": {
+            "type": "boolean",
+            "description": "Indicates if the token name should be shown",
+            "example": true
+          },
+          "king_of_the_hill_timestamp": {
+            "type": "object",
+            "description": "The King of the Hill timestamp",
+            "example": 1718270774645,
+            "nullable": true
+          },
+          "market_cap": {
+            "type": "number",
+            "description": "The market cap of the token",
+            "example": 28.146374664
+          },
+          "reply_count": {
+            "type": "number",
+            "description": "The reply count of the token",
+            "example": 2
+          },
+          "last_reply": {
+            "type": "number",
+            "description": "The last reply timestamp",
+            "example": 1719166751503
+          },
+          "nsfw": {
+            "type": "boolean",
+            "description": "Indicates if the token is NSFW",
+            "example": false
+          },
+          "market_id": {
+            "type": "object",
+            "description": "The market ID",
+            "example": "MarketID",
+            "nullable": true
+          },
+          "inverted": {
+            "type": "object",
+            "description": "Indicates if the token is inverted",
+            "example": false,
+            "nullable": true
+          },
+          "username": {
+            "type": "string",
+            "description": "The username of the creator",
+            "example": "ASATIANI"
+          },
+          "profile_image": {
+            "type": "string",
+            "description": "The profile image URI",
+            "example": "https://cf-ipfs.com/ipfs/QmZjkUUwxnMJqJ5q2Zre7iNUgS9Puew3Z6tazsLqcErKBL"
+          },
+          "usd_market_cap": {
+            "type": "number",
+            "description": "The USD market cap of the token",
+            "example": 3563.61249620904
+          },
+          "solana_price_per_token": {
+            "type": "number",
+            "description": "The solana price per token",
+            "example": 0.001
+          },
+          "usd_price_per_token": {
+            "type": "number",
+            "description": "The USD price per token",
+            "example": 0.001
+          }
+        },
+        "required": [
+          "mint",
+          "name",
+          "symbol",
+          "description",
+          "image_uri",
+          "metadata_uri",
+          "twitter",
+          "telegram",
+          "bonding_curve",
+          "associated_bonding_curve",
+          "creator",
+          "created_timestamp",
+          "raydium_pool",
+          "complete",
+          "virtual_sol_reserves",
+          "virtual_token_reserves",
+          "total_supply",
+          "website",
+          "show_name",
+          "king_of_the_hill_timestamp",
+          "market_cap",
+          "reply_count",
+          "last_reply",
+          "nsfw",
+          "market_id",
+          "inverted",
+          "username",
+          "profile_image",
+          "usd_market_cap",
+          "solana_price_per_token",
+          "usd_price_per_token"
+        ]
+      },
+      "TokenBuyerDto": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Address if of the token buyer"
+          },
+          "solAmount": {
+            "type": "number",
+            "description": "Amount of solana to spend"
+          }
+        },
+        "required": [
+          "address",
+          "solAmount"
+        ]
+      },
+      "CreatePumpFunTokenDto": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Public key of of account that will be used for creating token"
+          },
+          "buyers": {
+            "description": "Token buyer",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TokenBuyerDto"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the token"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Symbol of the token"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the token"
+          },
+          "twitter": {
+            "type": "string",
+            "description": "Twitter"
+          },
+          "telegram": {
+            "type": "string",
+            "description": "Telegram"
+          },
+          "website": {
+            "type": "string",
+            "description": "Website"
+          },
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "required": [
+          "owner",
+          "buyers",
+          "name",
+          "symbol",
+          "description",
+          "file"
+        ]
+      },
+      "TransactionsResponseEntity": {
+        "type": "object",
+        "properties": {
+          "txHashes": {
+            "description": "The transaction hashes of the transfers",
+            "example": [
+              "txHash1",
+              "txHash2"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "txHashes"
+        ]
+      },
+      "BuyAllSPLDto": {
+        "type": "object",
+        "properties": {
+          "keepSolanaAmount": {
+            "type": "number",
+            "description": "The amount of solana that will be left on the accounts",
+            "example": 0.01
+          },
+          "percent": {
+            "type": "number",
+            "description": "The percentage of the solana balance that will be bought",
+            "example": 100
+          },
+          "slippagePercent": {
+            "type": "number",
+            "description": "The slippage percentage",
+            "example": 1
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee",
+            "example": 0
+          }
+        },
+        "required": [
+          "percent"
+        ]
+      },
+      "TransferAllDto": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "The address to transfer SPL tokens to"
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee",
+            "example": 40000
+          }
+        },
+        "required": [
+          "address"
+        ]
+      },
+      "SellAllSPLDto": {
+        "type": "object",
+        "properties": {
+          "keepAmount": {
+            "type": "number",
+            "description": "The amount of SPL tokens that will be left on the accounts",
+            "example": 0
+          },
+          "percent": {
+            "type": "number",
+            "description": "The percentage of how much for each account will be sold",
+            "example": 100
+          },
+          "slippagePercent": {
+            "type": "number",
+            "description": "The slippage percentage",
+            "example": 1
+          },
+          "priorityMicroLamptorsFee": {
+            "type": "number",
+            "description": "The priority lamports fee",
+            "example": 0
+          }
+        },
+        "required": [
+          "percent"
+        ]
+      },
+      "DcaAccountEntity": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "The id of the solana DCA account (also public key)"
+          },
+          "bumpOperateSolAmount": {
+            "type": "number",
+            "description": "The amount of SOL that will be used for each transaction",
+            "example": 0.01
+          },
+          "balanceUsagePercent": {
+            "type": "number",
+            "description": "How much tokens we will sell every time",
+            "example": 50
+          },
+          "minTokenPrice": {
+            "type": "number",
+            "description": "The minimum price of the token to sell",
+            "example": 2.78e-8
+          },
+          "maxTokenPrice": {
+            "type": "number",
+            "description": "The maximum price of the token to sell",
+            "example": 0.000008
+          },
+          "minDelayBetweenTxsInSeconds": {
+            "type": "number",
+            "description": "The minimum delay between transactions for account in seconds",
+            "example": 15
+          },
+          "maxDelayBetweenTxsInSeconds": {
+            "type": "number",
+            "description": "The maximum delay between transactions for account in seconds",
+            "example": 60
+          },
+          "slippagePercent": {
+            "type": "number",
+            "description": "How much we ready to lost",
+            "example": 5
+          },
+          "reserveSolAmount": {
+            "type": "number",
+            "description": "How much solana we will store in any circumstance",
+            "example": 0.1
+          },
+          "minTokenAmountPerSale": {
+            "type": "number",
+            "description": "When we will sell the token, we need to have at least this amount",
+            "example": 1000
+          },
+          "maxTokenAmount": {
+            "type": "number",
+            "description": "How much tokens we can buy",
+            "example": 20000000
+          },
+          "reserveTokenAmount": {
+            "type": "number",
+            "description": "How much tokens we will store in any circumstance",
+            "example": 2000000
+          },
+          "canBuy": {
+            "type": "boolean",
+            "description": "Is buying allowed for auto orders?",
+            "example": true
+          },
+          "canSell": {
+            "type": "boolean",
+            "description": "Is selling allowed for auto orders?",
+            "example": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "When active transactions will be working",
+            "example": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The date when the account was created"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "The date when the account was last updated"
+          },
+          "lastTxType": {
+            "type": "object",
+            "description": "Last tx type"
+          },
+          "allowNextAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Allow next at date"
+          }
+        },
+        "required": [
+          "accountId",
+          "bumpOperateSolAmount",
+          "balanceUsagePercent",
+          "minTokenPrice",
+          "maxTokenPrice",
+          "minDelayBetweenTxsInSeconds",
+          "maxDelayBetweenTxsInSeconds",
+          "slippagePercent",
+          "reserveSolAmount",
+          "minTokenAmountPerSale",
+          "maxTokenAmount",
+          "reserveTokenAmount",
+          "canBuy",
+          "canSell",
+          "isActive",
+          "createdAt",
+          "updatedAt",
+          "allowNextAt"
+        ]
+      },
+      "UpdateDcaAccountDto": {
+        "type": "object",
+        "properties": {
+          "bumpOperateSolAmount": {
+            "type": "number",
+            "description": "The amount of SOL that will be used for each transaction",
+            "example": 0.01
+          },
+          "balanceUsagePercent": {
+            "type": "number",
+            "description": "How much tokens we will sell every time",
+            "example": 50
+          },
+          "minTokenPrice": {
+            "type": "number",
+            "description": "The minimum price of the token to sell",
+            "example": 2.78e-8
+          },
+          "maxTokenPrice": {
+            "type": "number",
+            "description": "The maximum price of the token to sell",
+            "example": 0.000008
+          },
+          "minDelayBetweenTxsInSeconds": {
+            "type": "number",
+            "description": "The minimum delay between transactions for account in seconds",
+            "example": 15
+          },
+          "maxDelayBetweenTxsInSeconds": {
+            "type": "number",
+            "description": "The maximum delay between transactions for account in seconds",
+            "example": 60
+          },
+          "slippagePercent": {
+            "type": "number",
+            "description": "How much we ready to lost",
+            "example": 5
+          },
+          "reserveSolAmount": {
+            "type": "number",
+            "description": "How much solana we will store in any circumstance",
+            "example": 0.1
+          },
+          "minTokenAmountPerSale": {
+            "type": "number",
+            "description": "When we will sell the token, we need to have at least this amount",
+            "example": 1000
+          },
+          "maxTokenAmount": {
+            "type": "number",
+            "description": "How much tokens we can buy",
+            "example": 20000000
+          },
+          "reserveTokenAmount": {
+            "type": "number",
+            "description": "How much tokens we will store in any circumstance",
+            "example": 2000000
+          },
+          "canBuy": {
+            "type": "boolean",
+            "description": "Is buying allowed for auto orders?",
+            "example": true
+          },
+          "canSell": {
+            "type": "boolean",
+            "description": "Is selling allowed for auto orders?",
+            "example": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "When active transactions will be working",
+            "example": true
+          },
+          "lastTxType": {
+            "type": "object",
+            "description": "Last tx type"
+          },
+          "allowNextAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Allow next at date"
+          }
+        }
+      }
+    }
+  }
+}

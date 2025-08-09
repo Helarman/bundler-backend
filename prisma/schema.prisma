@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
 }
 
 datasource db {
@@ -7,19 +7,128 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           Int       @id @default(autoincrement())
-  email        String    @unique
-  password     String
-  refreshToken String?
-  rpcUrl       String?
-  wssRpcUrl    String?
-  devWallet    String?
-  apiKey       String?  
-  transactionFee Float?  @default(0.0)
-  isConfirmed  Boolean   @default(false)
-  isSettingConfirmed  Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+enum AccountType {
+  SOLANA
+  TON
 }
 
+enum DcaTxType {
+  BUY
+  SELL
+  FULL_SELL
+}
+
+enum UserRole {
+  SYSTEM
+  ADMIN
+}
+
+model Account {
+  id   String      @id @default(cuid())
+  type AccountType @default(SOLANA)
+
+  name  String
+  color String
+
+  tokenAccountId            String?
+  tokenBalance              Float   @default(0)
+  isTokenBalanceSynced      Boolean @default(false)
+  isTokenAccountInitialized Boolean @default(false)
+
+  balance         Float   @default(0)
+  isBalanceSynced Boolean @default(false)
+
+  publicKey String @unique
+  secretKey String
+
+  isActive   Boolean @default(true)
+  isImported Boolean @default(false)
+  isRemoved  Boolean @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  dcaAccount DcaSolanaAccount?
+
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  exportedAt             DateTime?
+  lastBuyAt              DateTime?
+  lastSellAt             DateTime?
+  syncedAt               DateTime?
+  syncProblemInspectedAt DateTime?
+  removedAt              DateTime?
+}
+
+model App {
+  id String @id @default(cuid())
+
+  tokenId                  String @default("")
+  bondingCurveId           String @default("")
+  associatedBondingCurveId String @default("")
+  balanceUsagePercent      Int    @default(50)
+  priorityMicroLamptorsFee Int    @default(5000)
+
+  lastSyncedAt DateTime?
+}
+
+model DcaSolanaAccount {
+  accountId String  @id
+  account   Account @relation(fields: [accountId], references: [publicKey])
+
+  bumpOperateSolAmount        Float      @default(0.01)
+  minTokenAmountPerSale       Int        @default(1000)
+  maxTokenAmount              Int        @default(1000000000)
+  reserveTokenAmount          Int        @default(0)
+  reserveSolAmount            Float      @default(0.01)
+  balanceUsagePercent         Int        @default(50)
+  minTokenPrice               Float
+  maxTokenPrice               Float
+  minDelayBetweenTxsInSeconds Int        @default(30)
+  maxDelayBetweenTxsInSeconds Int        @default(120)
+  slippagePercent             Int        @default(5)
+  canBuy                      Boolean    @default(true)
+  canSell                     Boolean    @default(true)
+  isActive                    Boolean    @default(false)
+  lastTxType                  DcaTxType?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  allowNextAt DateTime @default(now())
+}
+
+model SolanaTx {
+  txHash    String   @id
+  signerIds String[]
+
+  isConfirmed Boolean @default(false)
+  isFailed    Boolean @default(false)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastScannedAt DateTime?
+  failedAt      DateTime?
+  confirmedAt   DateTime?
+}
+
+model User {
+  id                    String    @id @default(cuid())
+  email                 String   @unique
+  role                  UserRole  @default(ADMIN)
+  name                  String?
+  password              String
+  refreshToken          String?  
+  rpcUrl                String?   
+  wssRpcUrl             String?  
+  devWallet             String?   
+  apiKey                String?   
+  transactionFee        Float?    @default(0.0) 
+  isActive              Boolean   @default(true)
+  isConfirmed           Boolean   @default(false) 
+  isSettingConfirmed    Boolean   @default(false) 
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  lastPasswordChangedAt DateTime?
+
+  accounts Account[]
+}

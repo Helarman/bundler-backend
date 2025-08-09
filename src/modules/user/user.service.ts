@@ -7,7 +7,7 @@ import { UserResponseDto } from './dto/user.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async getUserById(id: number): Promise<UserResponseDto> {
+  async getUserById(id: string): Promise<UserResponseDto> {
     if (!id) {
       throw new Error('User ID is required');
     }
@@ -37,7 +37,7 @@ export class UserService {
   }
 
   async updateUser(
-    id: number,
+    id: string,
     dto,
   ): Promise<UserResponseDto> {
     if (!id) {

@@ -20,7 +20,7 @@ export class UserController {
   @Get('me')
   @HttpCode(HttpStatus.OK)
   async getCurrentUser(
-    @CurrentUser('id') userId: number,
+    @CurrentUser('id') userId: string,
   ): Promise<UserResponseDto> {
     return this.userService.getUserById(userId);
   }
@@ -28,7 +28,7 @@ export class UserController {
   @Put('update')
   @HttpCode(HttpStatus.OK)
   async updateCurrentUser(
-    @CurrentUser('id') userId: number,
+    @CurrentUser('id') userId: string,
     @Body() dto,
   ): Promise<UserResponseDto> {
     return this.userService.updateUser(userId, dto);
