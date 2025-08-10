@@ -21,14 +21,15 @@ async function bootstrap() {
           "http://localhost:5173", 
           "http://localhost:8080", 
           "https://api.mainnet-beta.solana.com", 
-          "https://api.jup.ag"
+          "https://api.jup.ag",
+          "85.239.147.232:3000"
         ]
       }
     }
   }));
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://bundler-frontend-tlkm.onrender.com'],
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://bundler-frontend-tlkm.onrender.com', "85.239.147.232:3000"],
     credentials: true,
     allowedHeaders: [
       'Authorization',
