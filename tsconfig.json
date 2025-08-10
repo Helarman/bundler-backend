@@ -4,9 +4,9 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,                      // Основной strict-режим
-    "strictPropertyInitialization": false,  // Отключает проверку инициализации полей класса
-    "noImplicitAny": false,              // Разрешает неявный `any` (если нужно)
+    "strict": true,                     
+    "strictPropertyInitialization": false,  
+    "noImplicitAny": false,            
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "rootDir": "./",
