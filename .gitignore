@@ -1,6 +1,7 @@
 # compiled output
 /node_modules
-/build
+!node_modules/@coral-xyz
+!node_modules/@coral-xyz/**/*
 
 # Logs
 logs

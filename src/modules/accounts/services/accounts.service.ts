@@ -91,9 +91,8 @@ export class AccountsService {
         throw new BadRequestException("Account with this publicKey already exists");
       }
 
-      const secretKey = this.encryptionService.encrypt(
-        bs58.encode(keypair.secretKey)
-      );;
+      const secretKey = Buffer.from(keypair.secretKey).toString('hex')
+
 
       const account = await this.db.account.create({
         data: {
