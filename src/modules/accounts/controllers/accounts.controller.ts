@@ -149,7 +149,6 @@ export class AccountsController {
     @UserFromJwt() user: UserEntity,
   ): Promise<string> {
     const { password } = payload;
-
     if (!(await this.authService.validateUser(user.email, password))) {
       throw new ForbiddenException("Invalid password");
     }

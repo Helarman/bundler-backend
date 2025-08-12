@@ -156,7 +156,7 @@ export class AccountsService {
   async getSecretKey(id: string): Promise<string> {
     const account = await this.findOne(id);
     
-    return this.encryptionService.decrypt(account!.secretKey);
+    return account!.secretKey;
   }
 
   async update(
