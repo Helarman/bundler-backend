@@ -44,5 +44,7 @@ export class SolanaUnhandledTxsEvent {
 export class SolanaSynchronizeAccountsEvent {
   static readonly id = "solana-synchronize-accounts";
 
-  constructor(public type?: "unsynced" | "all") {}
+  constructor(
+    public readonly params: { type?: "unsynced" | "all" } = { type: "unsynced" }
+  ) {}
 }

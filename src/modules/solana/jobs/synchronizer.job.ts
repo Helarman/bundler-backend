@@ -59,13 +59,12 @@ export class SolanaBlockhainSynchronizerJob {
       },
     });
 
-    this.synchonizeAccounts({ type: "all" });
+    this.synchonizeAccounts(new SolanaSynchronizeAccountsEvent({ type: "all" }));
   }
 
   @OnEvent(SolanaSynchronizeAccountsEvent.id)
-  async synchonizeAccounts(event: SolanaSynchronizeAccountsEvent) {
-    const { type = "unsynced" } = event;
-
+  async synchonizeAccounts(event?: SolanaSynchronizeAccountsEvent) {
+  const { type = "unsynced" } = event?.params || {}; 
     const accounts = await this.accountsService.findAll();
     const requiredSyncAccounts = accounts.filter((a) => {
       if (type === "all") return true;
@@ -498,8 +497,8 @@ private _getTokenAddress(tokenId: string, publicKey: string): string | null {
    */
   @OnEvent(AccountCreatedEvent.id)
   private async onNewAccountCreated() {
-    await this.synchonizeAccounts({
-      type: "unsynced",
-    });
+    await this.synchonizeAccounts(
+      new SolanaSynchronizeAccountsEvent({ type: "unsynced" })  
+    );
   }
 }

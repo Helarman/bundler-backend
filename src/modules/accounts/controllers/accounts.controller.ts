@@ -60,11 +60,12 @@ export class AccountsController {
   })
   @ApiOkResponse()
   async sync() {
-    this.eventEmitter.emit(SolanaSynchronizeAccountsEvent.id);
-
-    return "OK";
-  }
-
+    this.eventEmitter.emit(
+      SolanaSynchronizeAccountsEvent.id,
+      new SolanaSynchronizeAccountsEvent()
+    );
+  return "OK";
+}
   @Post("sync/all")
   @ApiOperation({
     summary: "Synchronize all accounts with blockchain",
@@ -73,10 +74,10 @@ export class AccountsController {
   })
   @ApiOkResponse()
   async syncAll() {
-    this.eventEmitter.emit(SolanaSynchronizeAccountsEvent.id, {
-      type: "all",
-    });
-
+    this.eventEmitter.emit(
+      SolanaSynchronizeAccountsEvent.id,
+      new SolanaSynchronizeAccountsEvent({ type: "all" })
+    );
     return "OK";
   }
 
