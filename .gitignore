@@ -2,6 +2,7 @@
 /node_modules
 !node_modules/@coral-xyz
 !node_modules/@coral-xyz/**/*
+/dist 
 
 # Logs
 logs

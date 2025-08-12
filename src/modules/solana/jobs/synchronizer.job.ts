@@ -239,15 +239,39 @@ export class SolanaBlockhainSynchronizerJob {
     });
   }
 
-  private _getTokenAddress(tokenId: string, publicKey: string) {
+private _getTokenAddress(tokenId: string, publicKey: string): string | null {
+  try {
+    // Валидация входных данных
+    if (!tokenId || !publicKey) {
+      this.logger.warn(`Empty tokenId or publicKey: tokenId=${tokenId}, publicKey=${publicKey}`);
+      return null;
+    }
+
+    // Проверка длины ключей
+    if (publicKey.length < 32 || tokenId.length < 32) {
+      this.logger.warn(`Invalid key length: tokenId=${tokenId.length}, publicKey=${publicKey.length}`);
+      return null;
+    }
+
+    const tokenPublicKey = new PublicKey(tokenId);
+    const ownerPublicKey = new PublicKey(publicKey);
+    
     return getAssociatedTokenAddressSync(
-      new PublicKey(tokenId),
-      new PublicKey(publicKey),
+      tokenPublicKey,
+      ownerPublicKey,
       true,
       TOKEN_PROGRAM_ID,
       ASSOCIATED_TOKEN_PROGRAM_ID,
     ).toBase58();
+  } catch (error) {
+    this.logger.error(`Failed to get token address`, {
+      tokenId,
+      publicKey,
+      error
+    });
+    return null;
   }
+}
 
   private async _assignTokenAccountIds() {
     const accounts = await this.prismaService.account.findMany({
@@ -269,7 +293,7 @@ export class SolanaBlockhainSynchronizerJob {
         tokenAccountId: this._getTokenAddress(
           config!.tokenId,
           account.publicKey,
-        ),
+        ) as string,
       });
     }
   }
