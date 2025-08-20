@@ -175,7 +175,7 @@ export class AccountsController {
   }
 
   @Put(":id/sol-transfer")
-  @Serializable(SolanaTransactionEntity)
+  //@Serializable(SolanaTransactionEntity)
   @ApiOperation({
     summary: "Transfer SOL to account",
     description:
@@ -193,7 +193,6 @@ export class AccountsController {
       ignoreRecipientNotFound,
     } = payload;
     const account = await this.service.findOne(id);
-
     if (!account) {
       throw new NotFoundException(`Account with id ${id} not found`);
     }
@@ -209,13 +208,19 @@ export class AccountsController {
     }
 
     const secretKey = await this.service.getSecretKey(id);
-    const txHash = await this.solanaService.transferSolana(
-      Keypair.fromSecretKey(bs58.decode(secretKey)),
-      new PublicKey(recipient),
-      amount,
-      priorityMicroLamptorsFee,
-      ignoreRecipientNotFound,
-    );
+    function hexToBase58(hexString: string): string {
+      const buffer = Buffer.from(hexString, 'hex');
+      return bs58.encode(buffer);
+    }
+
+      const sKey = hexToBase58(secretKey);
+      const txHash = await this.solanaService.transferSolana(
+        Keypair.fromSecretKey(bs58.decode(sKey)),
+        new PublicKey(recipient),
+        amount,
+        priorityMicroLamptorsFee,
+        true,
+      );
 
     this.eventEmitter.emit(
       SolanaTxCreatedEvent.id,
