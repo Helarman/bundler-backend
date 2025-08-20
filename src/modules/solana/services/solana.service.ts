@@ -28,6 +28,7 @@ import { Solana } from "../../@core/solana";
 @Injectable()
 export class SolanaService extends SolanaProviderService {
   private readonly logger = new Logger(SolanaService.name);
+  private rpcUrl: string;
 
   constructor(
     configService: ConfigService,
@@ -35,6 +36,7 @@ export class SolanaService extends SolanaProviderService {
     private db: PrismaService,
   ) {
     super(configService);
+    this.rpcUrl = configService.get<string>('SOLANA_URL') || SolanaProviderService.prodRpcUrl;
   }
 
   async isTokenAccountExist(wallet: PublicKey): Promise<boolean> {
@@ -140,12 +142,12 @@ export class SolanaService extends SolanaProviderService {
    * Get signatures for all tx hashes with chunking implementation
    * @param txHashes Tx hashes to get signatures for
    * @param chunkSize Chunk size
-   * @param rpcUrl RPC url (by default Solana mainnet)
+   * @param rpcUrl RPC url (by default from .env or fallback to prod)
    * @returns
    */
   async getTxsStatuses({
     txHashes,
-    connection = new Connection(SolanaProviderService.prodRpcUrl),
+    connection = new Connection(this.rpcUrl), // Используем RPC из .env
     chunkSize = 256,
   }: {
     txHashes: string[];
@@ -159,15 +161,15 @@ export class SolanaService extends SolanaProviderService {
       chunkedTxHashes.push(txHashes.slice(i, i + chunkSize));
     }
 
-  for (const chunk of chunkedTxHashes) {
-    const { value: chunkSignatures } = await connection.getSignatureStatuses(chunk);
-    
-    const validSignatures = chunkSignatures.filter(
-      (sig): sig is SignatureStatus => sig !== null
-    );
-    
-    signatures.push(...validSignatures);
-  }
+    for (const chunk of chunkedTxHashes) {
+      const { value: chunkSignatures } = await connection.getSignatureStatuses(chunk);
+      
+      const validSignatures = chunkSignatures.filter(
+        (sig): sig is SignatureStatus => sig !== null
+      );
+      
+      signatures.push(...validSignatures);
+    }
 
     return txHashes.reduce(
       (acc, txHash, index) => {
@@ -195,7 +197,7 @@ export class SolanaService extends SolanaProviderService {
    */
   public async getAccountsInfo({
     accountIds,
-    connection = new Connection(SolanaProviderService.prodRpcUrl),
+    connection = new Connection(this.rpcUrl), // Используем RPC из .env
     commitment,
     chunkSize = 100,
   }: {
