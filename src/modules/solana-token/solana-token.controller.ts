@@ -81,20 +81,27 @@ export class SolanaTokenController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     const { owner } = payload;
-    payload.buyers = JSON.parse(`[${payload.buyers}]`) as TokenBuyerDto[];
-
+    
+    let buyers: TokenBuyerDto[] = [];
+    if (payload.buyers) {
+      try {
+        buyers = JSON.parse(payload.buyers);
+      } catch (error) {
+        throw new BadRequestException('Invalid buyers JSON format');
+      }
+    }
     const buyersAccounts = await this.prismaService.account.findMany({
-      where: {
-        ...(payload.buyers
-          ? {
-              publicKey: {
-                in: payload.buyers.map((buyer) => buyer.address),
-              },
-            }
-          : {}),
-        isActive: true,
-        balance: { gt: 0.01 },
-      },
+    where: {
+      ...(buyers.length > 0
+        ? {
+            publicKey: {
+              in: buyers.map((buyer) => buyer.address),
+            },
+          }
+        : {}),
+      isActive: true,
+      balance: { gt: 0.01 },
+    },
     });
 
     const account = await this.accountsService.findOne(owner);
@@ -106,12 +113,19 @@ export class SolanaTokenController {
     const creatorSecretKey = await this.accountsService.getSecretKey(
       account.id,
     );
-    const creator = Keypair.fromSecretKey(bs58.decode(creatorSecretKey));
+    function hexToBase58(hexString: string): string {
+      const buffer = Buffer.from(hexString, 'hex');
+      return bs58.encode(buffer);
+    }
+
+    const sKey = hexToBase58(creatorSecretKey);
+
+    const creator = Keypair.fromSecretKey(bs58.decode(sKey));
 
     let txHashes = [];
 
     const buyerToSolAmountMap = new Map<string, number>(
-      payload.buyers.map((buyer) => [buyer.address, buyer.solAmount]),
+      buyers.map((buyer) => [buyer.address, buyer.solAmount]),
     );
 
     try {
@@ -187,11 +201,16 @@ export class SolanaTokenController {
     } catch (error) {
       this.logger.error(error);
 
-      console.log(
-        await (error as SendTransactionError).getLogs(
-          this.solanaTokenService.connection!,
-        ),
-      );
+      if (error instanceof SendTransactionError) {
+        try {
+          const logs = await error.getLogs(this.solanaTokenService.connection!);
+          console.log('Transaction logs:', logs);
+        } catch (logsError) {
+          console.log('Failed to get transaction logs:', logsError);
+        }
+      } else {
+        console.log('Error details:', error);
+      }
 
       throw new BadRequestException("Something went wrong");
     }

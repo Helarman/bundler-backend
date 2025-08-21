@@ -1689,23 +1689,6 @@
           "usd_price_per_token"
         ]
       },
-      "TokenBuyerDto": {
-        "type": "object",
-        "properties": {
-          "address": {
-            "type": "string",
-            "description": "Address if of the token buyer"
-          },
-          "solAmount": {
-            "type": "number",
-            "description": "Amount of solana to spend"
-          }
-        },
-        "required": [
-          "address",
-          "solAmount"
-        ]
-      },
       "CreatePumpFunTokenDto": {
         "type": "object",
         "properties": {
@@ -1714,11 +1697,9 @@
             "description": "Public key of of account that will be used for creating token"
           },
           "buyers": {
-            "description": "Token buyer",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TokenBuyerDto"
-            }
+            "type": "string",
+            "description": "Token buyers as JSON string",
+            "example": "[{\"address\": \"9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM\", \"solAmount\": 0.1}]"
           },
           "name": {
             "type": "string",
@@ -1751,7 +1732,6 @@
         },
         "required": [
           "owner",
-          "buyers",
           "name",
           "symbol",
           "description",

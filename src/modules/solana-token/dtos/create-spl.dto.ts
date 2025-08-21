@@ -29,12 +29,14 @@ export class CreatePumpFunTokenDto {
   owner: string;
 
   @Expose()
+  @IsOptional()
   @ApiProperty({
-    description: "Token buyer",
-    type: TokenBuyerDto,
-    isArray: true,
+    description: "Token buyers as JSON string",
+    type: String,
+    required: false,
+    example: '[{"address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM", "solAmount": 0.1}]'
   })
-  buyers: TokenBuyerDto[];
+  buyers?: string;
 
   @Expose()
   @IsString()

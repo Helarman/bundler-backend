@@ -242,7 +242,7 @@ private _getTokenAddress(tokenId: string, publicKey: string): string | null {
   try {
     // Валидация входных данных
     if (!tokenId || !publicKey) {
-      this.logger.warn(`Empty tokenId or publicKey: tokenId=${tokenId}, publicKey=${publicKey}`);
+      //this.logger.warn(`Empty tokenId or publicKey: tokenId=${tokenId}, publicKey=${publicKey}`);
       return null;
     }
 
