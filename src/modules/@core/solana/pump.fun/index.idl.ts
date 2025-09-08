@@ -7,7 +7,6 @@ export const pumpFunIDL: Idl = {
     {
       name: "initialize",
       docs: ["Creates the global state."],
-       discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       accounts: [
         {
           name: "global",
@@ -29,7 +28,6 @@ export const pumpFunIDL: Idl = {
     },
     {
       name: "setParams",
-      discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       docs: ["Sets the global state parameters."],
       accounts: [
         {
@@ -88,7 +86,6 @@ export const pumpFunIDL: Idl = {
     {
       name: "create",
       docs: ["Creates a new coin and bonding curve."],
-       discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       accounts: [
         {
           name: "mint",
@@ -179,7 +176,6 @@ export const pumpFunIDL: Idl = {
     {
       name: "buy",
       docs: ["Buys tokens from a bonding curve."],
-       discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       accounts: [
         {
           name: "global",
@@ -256,7 +252,6 @@ export const pumpFunIDL: Idl = {
     {
       name: "sell",
       docs: ["Sells tokens into a bonding curve."],
-       discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       accounts: [
         {
           name: "global",
@@ -332,7 +327,6 @@ export const pumpFunIDL: Idl = {
     },
     {
       name: "withdraw",
-      discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       docs: [
         "Allows the admin to withdraw liquidity for a migration once the bonding curve completes",
       ],
@@ -399,7 +393,6 @@ export const pumpFunIDL: Idl = {
   accounts: [
     {
       name: "Global",
-      
       type: {
         kind: "struct",
         fields: [
@@ -440,7 +433,6 @@ export const pumpFunIDL: Idl = {
     },
     {
       name: "BondingCurve",
-      
       type: {
         kind: "struct",
         fields: [
@@ -475,7 +467,6 @@ export const pumpFunIDL: Idl = {
   events: [
     {
       name: "CreateEvent",
-      discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       fields: [
         {
           name: "name",
@@ -511,7 +502,6 @@ export const pumpFunIDL: Idl = {
     },
     {
       name: "TradeEvent",
-      discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       fields: [
         {
           name: "mint",
@@ -557,7 +547,6 @@ export const pumpFunIDL: Idl = {
     },
     {
       name: "CompleteEvent",
-      discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       fields: [
         {
           name: "user",
@@ -583,7 +572,6 @@ export const pumpFunIDL: Idl = {
     },
     {
       name: "SetParamsEvent",
-      discriminator: [0, 0, 0, 0, 0, 0, 0, 0],
       fields: [
         {
           name: "feeRecipient",

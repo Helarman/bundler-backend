@@ -1,4 +1,4 @@
-import { Program, Provider, Wallet } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, Provider, Wallet } from "@coral-xyz/anchor";
 import { Solana } from "..";
 import { GlobalAccount } from "../globalAccount";
 import { pumpFunIDL } from "./index.idl";
@@ -109,8 +109,8 @@ export class PumpFun {
   ) {
     const program = new Program<typeof pumpFunIDL>(
       pumpFunIDL,
-      PumpFun.programId as any,
-      provider as any,
+      PumpFun.programId,
+      provider,
     );
 
     const mintAuthorityId = "TSLvdd1pWpHVjahSpsvCXUbgwsL3JAcvokwaKt1eokM";
@@ -187,8 +187,8 @@ export class PumpFun {
 
     const program = new Program<typeof pumpFunIDL>(
       pumpFunIDL,
-      PumpFun.programId as any,
-      provider as any,
+      PumpFun.programId,
+      provider,
     );
 
     return await program.methods

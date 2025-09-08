@@ -1,5 +1,6 @@
 import {
   AnchorProvider,
+  Idl,
   Program,
   Wallet,
   setProvider,
@@ -381,7 +382,7 @@ export class PumpFunToken extends PumpFun {
     setProvider(provider);
 
     const program = new Program<typeof pumpFunIDL>(
-      pumpFunIDL,
+       pumpFunIDL as Idl,
       PumpFun.programId as any,
       provider as any,
     );

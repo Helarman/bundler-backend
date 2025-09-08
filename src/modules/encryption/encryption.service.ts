@@ -38,33 +38,40 @@ export class EncryptionService {
     ]).toString("base64");
   }
 
-  public decrypt(value: string): string {
-    try {
-      const buffer = Buffer.from(value, "base64");
-      if (buffer.length < 16) throw new Error('Invalid encrypted data');
-      
-      const iv = buffer.subarray(0, 16);
-      const encrypted = buffer.subarray(16);
-      const decipher = createDecipheriv(this.algorithm, this.key(), iv);
-
-      return Buffer.concat([
-        decipher.update(encrypted),
-        decipher.final(),
-      ]).toString("utf-8");
-    } catch (error) {
-      // Правильная обработка unknown типа
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : 'Unknown error occurred';
-      
-      // Логирование для диагностики
-      console.error('Decryption failed:', {
-        input: value?.substring(0, 50) + '...',
-        error: errorMessage,
-        stack: error instanceof Error ? error.stack : undefined
-      });
-      
-      throw new Error(`Decryption failed: ${errorMessage}`);
+ public decrypt(value: string): string {
+  try {
+    console.log
+    const isHex = /^[0-9a-fA-F]+$/.test(value);
+    
+    let buffer: Buffer;
+    if (isHex) {
+      buffer = Buffer.from(value, 'hex');
+    } else {
+      buffer = Buffer.from(value, 'base64');
     }
+    
+    if (buffer.length < 16) throw new Error('Invalid encrypted data');
+    
+    const iv = buffer.subarray(0, 16);
+    const encrypted = buffer.subarray(16);
+    const decipher = createDecipheriv(this.algorithm, this.key(), iv);
+    
+    return Buffer.concat([
+      decipher.update(encrypted),
+      decipher.final(),
+    ]).toString('utf-8');
+  } catch (error) {
+    const errorMessage = error instanceof Error 
+      ? error.message 
+      : 'Unknown error occurred';
+    
+    console.error('Decryption failed:', {
+      input: value?.substring(0, 50) + '...',
+      error: errorMessage,
+      stack: error instanceof Error ? error.stack : undefined
+    });
+    
+    throw new Error(`Decryption failed: ${errorMessage}`);
   }
+}
 }

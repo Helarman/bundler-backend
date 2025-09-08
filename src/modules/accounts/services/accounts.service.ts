@@ -131,7 +131,6 @@ export class AccountsService {
     if (withSecretKeys) {
       accounts = accounts.map((account) => ({
         ...account,
-        secretKey: this.encryptionService.decrypt(account.secretKey),
       }));
     }
 

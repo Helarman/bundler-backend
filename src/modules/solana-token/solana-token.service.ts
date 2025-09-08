@@ -334,61 +334,71 @@ export class SolanaTokenService extends SolanaProviderService {
     });
   }
 
-  async create(
-    creator: Keypair,
-    dto: CreatePumpFunTokenDto,
-    file: Express.Multer.File,
-    buyers: { address: string; solAmount: number }[],
-  ) {
-    const { name, symbol } = dto;
+ async create(
+  creator: Keypair,
+  dto: CreatePumpFunTokenDto,
+  file: Express.Multer.File,
+  buyers: { address: string; solAmount: number }[],
+) {
+  const { name, symbol } = dto;
 
-    const commitment: Commitment = "confirmed";
-    const connection = new Connection(this.config.rpcUrl, commitment);
-    const provider = new AnchorProvider(connection, new Wallet(creator), {
-      commitment,
-      skipPreflight: true,
-    });
+  const commitment: Commitment = "confirmed";
+  const connection = new Connection(this.config.rpcUrl, commitment);
+  const provider = new AnchorProvider(connection, new Wallet(creator), {
+    commitment,
+    skipPreflight: true,
+  });
+  const accounts = await this.accountsService.findAll({
+    withSecretKeys: true,
+  });
 
-    const accounts = await this.accountsService.findAll({
-      withSecretKeys: true,
-    });
+  const buyerAccounts: { buyer: Keypair; solAmount: number }[] = [];
+  const accountIdToAccount = new Map<string, (typeof accounts)[0]>(
+    accounts.map((account) => [account.publicKey, account]),
+  );
 
-    const buyerAccounts: { buyer: Keypair; solAmount: number }[] = [];
-    const accountIdToAccount = new Map<string, (typeof accounts)[0]>(
-      accounts.map((account) => [account.publicKey, account]),
-    );
+  for (const { address, solAmount } of buyers) {
+    try {
+      const account = accountIdToAccount.get(address);
 
-    for (const { address, solAmount } of buyers) {
-      try {
-        const account = accountIdToAccount.get(address);
-
-        if (!account) {
-          throw new BadRequestException(`Account with id ${address} not found`);
-        }
-
-        if (account.balance < solAmount) {
-          throw new BadRequestException(
-            `Insufficient balance for account ${address}. Only ${account.balance} SOL available but ${solAmount} required`,
-          );
-        }
-
-        const buyer = Keypair.fromSecretKey(bs58.decode(account.secretKey));
-
-        buyerAccounts.push({
-          buyer,
-          solAmount,
-        });
-      } catch (error) {
-        this.logger.error(error);
+      if (!account) {
+        throw new BadRequestException(`Account with id ${address} not found`);
       }
+
+      if (account.balance < solAmount) {
+        throw new BadRequestException(
+          `Insufficient balance for account ${address}. Only ${account.balance} SOL available but ${solAmount} required`,
+        );
+      }
+
+      const buyer = Keypair.fromSecretKey(bs58.decode(account.secretKey));
+
+      buyerAccounts.push({
+        buyer,
+        solAmount,
+      });
+    } catch (error) {
+      this.logger.error(error);
     }
+  }
 
-    const mint = Keypair.generate();
-    const bondingCurve = PumpFun.getMintBondingCurve(mint.publicKey);
-    const metadataUri = await PumpFun.putTokenMetadata(dto, file);
+  const mint = Keypair.generate();
+  const bondingCurve = PumpFun.getMintBondingCurve(mint.publicKey);
+  const metadataUri = await PumpFun.putTokenMetadata(dto, file);
 
-    const mintBlockHash =
-      await connection.getLatestBlockhashAndContext(commitment);
+  const mintBlockHash =
+    await connection.getLatestBlockhashAndContext(commitment);
+
+  try {
+    const createTokenInstruction = await PumpFun.createTokenInstruction(
+      provider,
+      creator,
+      mint,
+      bondingCurve,
+      name,
+      symbol,
+      metadataUri,
+    );
 
     const transaction = new VersionedTransaction(
       new TransactionMessage({
@@ -401,15 +411,7 @@ export class SolanaTokenService extends SolanaProviderService {
           ComputeBudgetProgram.setComputeUnitPrice({
             microLamports: 1_900_000,
           }),
-          await PumpFun.createTokenInstruction(
-            provider,
-            creator,
-            mint,
-            bondingCurve,
-            name,
-            symbol,
-            metadataUri,
-          ),
+          createTokenInstruction,
         ],
       }).compileToV0Message(),
     );
@@ -456,7 +458,11 @@ export class SolanaTokenService extends SolanaProviderService {
       ),
       txHashes,
     };
+  } catch (error) {
+    console.error('ERROR in createTokenInstruction:', error);
+    throw error;
   }
+}
 
   /**
    * Buy tokens for input solana amount
